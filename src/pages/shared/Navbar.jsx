@@ -21,7 +21,7 @@ const Navbar = () => {
         </ul>
       </li> */}
       <li>
-        <a>Item 3</a>
+        <NavLink to={"/order"}>Order Food</NavLink>
       </li>
     </>
   );
