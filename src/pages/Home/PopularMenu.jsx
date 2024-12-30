@@ -11,8 +11,8 @@ const PopularMenu = () => {
       .then((data) => {
         const popularItems = data.filter((item) => item.category === "popular");
         setMenu(popularItems);
-      })
-  }, [])
+      });
+  }, []);
 
   return (
     <section className="mb-12">
@@ -24,6 +24,11 @@ const PopularMenu = () => {
         {menu.map((item) => (
           <MenuItem key={item._id} item={item}></MenuItem>
         ))}
+      </div>
+      <div className="text-center">
+        <button className="btn btn-outline border-0 border-b-4 mt-6">
+          View Full Menu
+        </button>
       </div>
     </section>
   );
