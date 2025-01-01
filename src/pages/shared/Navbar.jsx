@@ -1,17 +1,18 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
 
   const handleLogout = () => {
     logoutUser()
-    .then(()=>{})
-    .catch(err => console.log(err.message))
+      .then(() => {})
+      .catch((err) => console.log(err.message));
   };
   const navOptions = (
-    <>
+    <div className="flex items-center justify-center">
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
@@ -35,6 +36,14 @@ const Navbar = () => {
       <li>
         <NavLink to={"/secret"}>Secret</NavLink>
       </li>
+      <li>
+        <Link to={"/"}>
+          <div className="btn">
+            <FaShoppingCart className="text-2xl"></FaShoppingCart>
+            <div className="badge badge-secondary">+99</div>
+          </div>
+        </Link>
+      </li>
 
       {user ? (
         <>
@@ -49,7 +58,7 @@ const Navbar = () => {
           </li>
         </>
       )}
-    </>
+    </div>
   );
   return (
     <>
