@@ -55,7 +55,7 @@ const Navbar = () => {
 
       {/* cart section in navbar */}
       <li>
-        <Link to={"/"}>
+        <Link to={"/dashboard/cart"}>
           <div className="btn">
             <FaShoppingCart className="text-2xl"></FaShoppingCart>
             <div className="badge badge-secondary">+{cart.length}</div>
