@@ -4,49 +4,62 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
   const {
     register,
-    handleSubmit, reset,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const {createUser, updateUserProfile} = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
+
+  const { createUser, updateUserProfile } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
-    createUser(data.email, data.password)
-    .then(res => {
-        const user = res.user;
-        console.log(user);
-        updateUserProfile(data.name, data.photoURL)
-        .then(()=>{
-            console.log("Profile Updated");
-            Swal.fire({
+    createUser(data.email, data.password).then((res) => {
+      const user = res.user;
+      console.log(user);
+      updateUserProfile(data.name, data.photoURL)
+        .then(() => {
+          // console.log("Profile Updated");
+
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+          };
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user added to db");
+              reset();
+              Swal.fire({
                 title: "Sign Up Successful.",
                 showClass: {
                   popup: `
-                    animate__animated
-                    animate__fadeInUp
-                    animate__faster
-                  `
+                      animate__animated
+                      animate__fadeInUp
+                      animate__faster
+                    `,
                 },
                 hideClass: {
                   popup: `
-                    animate__animated
-                    animate__fadeOutDown
-                    animate__faster
-                  `
-                }
+                      animate__animated
+                      animate__fadeOutDown
+                      animate__faster
+                    `,
+                },
               });
-            reset();
-            navigate("/");
+              navigate("/");
+            }
+          });
         })
-        .catch(err => console.log(err.message))
-    })
+        .catch((err) => console.log(err.message));
+    });
   };
 
   return (
