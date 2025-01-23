@@ -29,7 +29,8 @@ const AddItems = () => {
             name: data.name,
             category: data.category,
             price: parseFloat(data.price),
-            recipe: res.data.data.display_url
+            recipe: data.recipe,
+            image: res.data.data.display_url
         }
         const menuRes = await axiosSecure.post("/menu", menuItem);
         console.log(menuRes.data);

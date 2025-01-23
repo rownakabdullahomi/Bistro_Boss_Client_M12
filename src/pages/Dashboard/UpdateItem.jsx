@@ -33,11 +33,12 @@ const onSubmit = async(data) => {
           name: data.name,
           category: data.category,
           price: parseFloat(data.price),
-          recipe: res.data.data.display_url
+          recipe: data.recipe,
+          image: res.data.data.display_url
       }
       const menuRes = await axiosSecure.patch(`/menu/${item._id}`, menuItem);
       console.log(menuRes.data);
-      if(menuRes.data.insertedId){
+      if(menuRes.data.modifiedCount > 0){
           reset();
           // show success alert
           Swal.fire({
@@ -133,8 +134,8 @@ const onSubmit = async(data) => {
           </div>
 
           <button className="btn btn-outline btn-neutral">
-            <input type="submit" value={"Add Item"} />
-            Update
+            <input type="submit" value={"Update"} />
+            
           </button>
         </form>
       </div>
