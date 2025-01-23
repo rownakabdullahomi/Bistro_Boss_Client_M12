@@ -1,8 +1,34 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
+import useCart from "../../../hooks/useCart";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
+  const [error, setError] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
   const stripe = useStripe();
   const elements = useElements();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const [cart, refetch] = useCart();
+  const navigate = useNavigate();
+
+
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+
+  useEffect(() => {
+    if (totalPrice > 0) {
+      axiosSecure
+        .post("/create-payment-intent", { price: totalPrice })
+        .then((res) => {
+          console.log(res.data.clientSecret);
+          setClientSecret(res.data.clientSecret);
+        });
+    }
+  }, [axiosSecure, totalPrice]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -17,20 +43,17 @@ const CheckoutForm = () => {
     }
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card
-    })
+      type: "card",
+      card,
+    });
 
     if (error) {
-        console.log('payment error', error);
-        // setError(error.message);
+      console.log("payment error", error);
+      setError(error.message);
+    } else {
+      console.log("payment method", paymentMethod);
+      setError("");
     }
-    else {
-        console.log('payment method', paymentMethod)
-        // setError('');
-    }
-
-
   };
 
   return (
@@ -54,10 +77,11 @@ const CheckoutForm = () => {
       <button
         className="btn btn-sm btn-primary my-4"
         type="submit"
-        // disabled={!stripe || !clientSecret}
+        disabled={!stripe || !clientSecret}
       >
         Pay
       </button>
+      <p className="text-red-600">{error}</p>
     </form>
   );
 };
