@@ -114,14 +114,14 @@ const Login = () => {
                   type="text"
                   placeholder="type the captcha above"
                   className="input input-bordered"
-                  required
+                  // required
                 />
               </div>
               <div className="form-control mt-6">
                 <input
                   type="submit"
                   value={"Login"}
-                  disabled={disabled}
+                  disabled={false}
                   className="btn btn-primary"
                 />
               </div>

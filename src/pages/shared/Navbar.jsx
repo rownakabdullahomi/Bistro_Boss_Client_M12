@@ -61,7 +61,7 @@ const Navbar = () => {
       {/* cart section in navbar */}
       <li>
         <Link to={"/dashboard/cart"}>
-          <div className="btn">
+          <div className="btn bg-base-300">
             <FaShoppingCart className="text-2xl"></FaShoppingCart>
             <div className="badge badge-secondary">+{cart.length}</div>
           </div>
@@ -92,7 +92,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-compact dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               {navOptions}
             </ul>
@@ -103,7 +103,7 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{navOptions}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          <a className="btn">Get Started</a>
         </div>
       </div>
     </>
